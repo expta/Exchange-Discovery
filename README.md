@@ -1,6 +1,6 @@
 # Exchange-Discovery
 Jeff Guillet, SPS Principal Systems Architect | MVP | MCSM | CISSP
-10/17/2016
+October 17, 2016
 
 These scripts are used to gather discovery information about Exchange and Active Directory from a client's environment. Typically this is done before the Design and Planning phase begins so the engineer has a working understanding of the current environment. It's also useful information to refer to after changes have been made.
 
