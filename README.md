@@ -30,7 +30,7 @@ Written by: Jeff Guillet, SPS Principal Systems Architect | MVP | MCSM | CISSP
 * **Karsten Palmvig** - GetLogFileUsage.ps1
 * **Michael Van Horenbeeck** - Get-VirDirInfo.ps1
 * **Neil Johnson** - Messagestats.ps1
-* **Paul Cunningham** - Get-ADInfo.ps1, Get-MailboxReport.ps1, Test-ExchangeServerHealth.ps1
+* **Paul Cunningham** - Get-ADInfo.ps1, Get-MailboxReport.ps1, Test-ExchangeServerHealth.ps1, Get-DailyBackupAlerts.ps1
 * **Rob Campbell** - Get-EmailStatsPerUser.ps1
 * **Steve Goodman** - Get-ExchangeEnvironmentReport.ps1
 
