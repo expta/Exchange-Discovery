@@ -1,5 +1,5 @@
 # Discover-ExchangeEnvironment.ps1
-A collection of PowerShell scripts that gather discovery information about Exchange and Active Directory from a customer environment.
+A collection of PowerShell scripts that gather useful discovery information about Exchange and Active Directory from a customer environment.
 
 ## SYNOPSIS
 **Discover-ExchangeEnvironment.ps1** - Discovery reports generation script.
