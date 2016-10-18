@@ -26,6 +26,7 @@ Written by: Jeff Guillet, SPS Principal Systems Architect | MVP | MCSM | CISSP
 * Twitter:  http://twitter.com/expta
 
 ### Credits for Individual Scripts
+Several of the scripts in this collection are the works of the following individuals. This collection will be updated when newer versions of the scripts are updated.
 * **Adrian Milliner** - Get-BufferHtml.ps1
 * **Karsten Palmvig** - GetLogFileUsage.ps1
 * **Michael Van Horenbeeck** - Get-VirDirInfo.ps1
