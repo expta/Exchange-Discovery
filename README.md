@@ -21,9 +21,7 @@ To run the discovery scripts, do the following:
 Discover-ExchangeEnvironment.ps1 will run the other scripts and then gather all the output files into a single ZIP file called **$Org-DiscoveryFiles.zip.**
 
 ## Credits
-Written by: Jeff Guillet
-
-            SPS Principal Systems Architect | MVP | MCSM | CISSP
+Written by: Jeff Guillet, SPS Principal Systems Architect | MVP | MCSM | CISSP
 
 * Email:    jeff@expta.com
 * Website:  http://expta.com
