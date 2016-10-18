@@ -16,7 +16,7 @@ To run the discovery scripts, do the following:
 1. Extract **Discover-ExchangeEnvironment.zip** to a folder (i.e., C:\Discovery) on the highest version Exchange server in the environment.
 2. Run **Discover-ExchangeEnvironment.ps1** from an elevated Exchange Management Shell.
 
-Discover-ExchangeEnvironment.ps1 will run the other scripts and then gather all the output files into a single ZIP file called **$Org-DiscoveryFiles.zip.**
+Discover-ExchangeEnvironment.ps1 will run the other scripts and then gather all the output files into a single ZIP file called ** *$Org*-DiscoveryFiles.zip.**
 
 ## Credits
 Written by: Jeff Guillet, SPS Principal Systems Architect | MVP | MCSM | CISSP
