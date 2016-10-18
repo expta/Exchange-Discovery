@@ -1,5 +1,5 @@
 # Exchange-Discovery
-A collection of PowerShell scripts that gather discovery information about Exchange and Active Directory from a client's environment.
+A collection of PowerShell scripts that gather discovery information about Exchange and Active Directory from a customer environment.
 
 ## SYNOPSIS
 Discover-ExchangeEnvironment.ps1 - Discovery reports generation script.
