@@ -6,9 +6,7 @@ A collection of PowerShell scripts that gather useful discovery information abou
 
 Generates several reports of useful information for the customer environment. Typically this is done before the Design and Planning phase begins so the engineer has a working understanding of the current environment. It's also useful information to refer to after changes have been made.
 
-The script takes no parameters -- it calls all the other scripts and gathers all the output files into a single ZIP file called $Org-DiscoveryFiles.zip.
-
-Each script is signed so they will run under most Exchange Management Shell environments without having to alter the PowerShell execution policy.
+The script takes no parameters. It calls the other scripts and then gathers all the output files into a single ZIP file called $Org-DiscoveryFiles.zip. Each script is signed so they will run under most Exchange Management Shell environments without having to alter the PowerShell execution policy.
 
 Discover-ExchangeEnvironment.ps1 can also be run by the customer, who can then send the resulting ZIP file to the SPS engineer.
 
