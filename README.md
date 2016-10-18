@@ -2,7 +2,7 @@
 A collection of PowerShell scripts that gather discovery information about Exchange and Active Directory from a customer environment.
 
 ## SYNOPSIS
-Discover-ExchangeEnvironment.ps1 - Discovery reports generation script.
+**Discover-ExchangeEnvironment.ps1** - Discovery reports generation script.
 
 Generates several reports of useful information for the customer environment. Typically this is done before the Design and Planning phase begins so the engineer has a working understanding of the current environment. It's also useful information to refer to after changes have been made.
 
@@ -15,26 +15,27 @@ Discover-ExchangeEnvironment.ps1 can also be run by the customer, who can then s
 ## Usage
 To run the discovery scripts, do the following:
 
-1. Extract Discover-ExchangeEnvironment.zip to a folder (i.e., C:\Discovery) on the highest version Exchange server in the environment.
-2. Run Discover-ExchangeEnvironment.ps1 from an elevated Exchange Management Shell.
+1. Extract **Discover-ExchangeEnvironment.zip** to a folder (i.e., C:\Discovery) on the highest version Exchange server in the environment.
+2. Run **Discover-ExchangeEnvironment.ps1** from an elevated Exchange Management Shell.
 
-Discover-ExchangeEnvironment.ps1 will run the other scripts and then gather all the output files into a single ZIP file called $Org-DiscoveryFiles.zip.
+Discover-ExchangeEnvironment.ps1 will run the other scripts and then gather all the output files into a single ZIP file called **$Org-DiscoveryFiles.zip.**
 
 ## Credits
-Written By: Jeff Guillet, SPS Principal Systems Architect | MVP | MCSM | CISSP
+Written by: Jeff Guillet
+            SPS Principal Systems Architect | MVP | MCSM | CISSP
 
-- Email:    jeff@expta.com
-- Website:  http://expta.com
-- Twitter:  http://twitter.com/expta
+* Email:    jeff@expta.com
+* Website:  http://expta.com
+* Twitter:  http://twitter.com/expta
 
 ### Credits for Individual Scripts
-- Paul Cunningham - Get-ADInfo.ps1, Get-MailboxReport.ps1, Test-ExchangeServerHealth.ps1
-- Steve Goodman - Get-ExchangeEnvironmentReport.ps1
-- Michael Van Horenbeeck - Get-VirDirInfo.ps1
-- Adrian Milliner - Get-BufferHtml.ps1
-- Rob Campbell - Get-EmailStatsPerUser.ps1
-- Karsten Palmvig - GetLogFileUsage.ps1
-- Neil Johnson - Messagestats.ps1
+* **Adrian Milliner** - Get-BufferHtml.ps1
+* **Karsten Palmvig** - GetLogFileUsage.ps1
+* **Michael Van Horenbeeck** - Get-VirDirInfo.ps1
+* **Neil Johnson** - Messagestats.ps1
+* **Paul Cunningham** - Get-ADInfo.ps1, Get-MailboxReport.ps1, Test-ExchangeServerHealth.ps1
+* **Rob Campbell** - Get-EmailStatsPerUser.ps1
+* **Steve Goodman** - Get-ExchangeEnvironmentReport.ps1
 
 ## Change Log
 - V1.00, 10/17/2016 - Initial version
