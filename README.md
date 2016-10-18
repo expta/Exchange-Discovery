@@ -27,5 +27,14 @@ Written By: Jeff Guillet, SPS Principal Systems Architect | MVP | MCSM | CISSP
 - Website:  http://expta.com
 - Twitter:  http://twitter.com/expta
 
+### Credits for Individual Scripts
+- Paul Cunningham - Get-ADInfo.ps1, Get-MailboxReport.ps1, Test-ExchangeServerHealth.ps1
+- Steve Goodman - Get-ExchangeEnvironmentReport.ps1
+- Michael Van Horenbeeck - Get-VirDirInfo.ps1
+- Adrian Milliner - Get-BufferHtml.ps1
+- Rob Campbell - Get-EmailStatsPerUser.ps1
+- Karsten Palmvig - GetLogFileUsage.ps1
+- Neil Johnson - Messagestats.ps1
+
 ## Change Log
 - V1.00, 10/17/2016 - Initial version
