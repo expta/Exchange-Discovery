@@ -27,6 +27,9 @@ Get-VirDirInfo -ADPropertiesOnly -Filepath .
 Write-Host "Creating Exchange environment report..." -ForegroundColor Cyan
 .\Get-ExchangeEnvironmentReport.ps1 -HtmlReport $Org-Environment.htm
 
+Write-Host "Creating Exchange backup report..." -ForegroundColor Cyan
+.\Get-DailyBackupAlerts.ps1
+
 Write-Host "Getting Active Directory info..." -ForegroundColor Cyan
 .\Get-ADInfo.ps1
 
@@ -98,8 +101,8 @@ Write-Host "Done! Please send the ""$Org-DiscoveryFiles.zip"" file to your SPS e
 # SIG # Begin signature block
 # MIINHAYJKoZIhvcNAQcCoIINDTCCDQkCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUVJ6aG8XhS3A2Zqw7G69o3aQG
-# 66SgggpeMIIFJjCCBA6gAwIBAgIQDabkR8675p80ZdtFokcNRTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUUgOj4zRLqB4r/joN26MZyAYE
+# 88qgggpeMIIFJjCCBA6gAwIBAgIQDabkR8675p80ZdtFokcNRTANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE2MTAxNzAwMDAwMFoXDTE3MTAy
@@ -159,11 +162,11 @@ Write-Host "Done! Please send the ""$Org-DiscoveryFiles.zip"" file to your SPS e
 # Y29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFzc3VyZWQgSUQgQ29kZSBTaWdu
 # aW5nIENBAhANpuRHzrvmnzRl20WiRw1FMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3
 # AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisG
-# AQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSA4lNfvr3z
-# wxJk4mFM4ifXsyqRezANBgkqhkiG9w0BAQEFAASCAQANi3ceQxLf9hoOAn0SWHfq
-# ZjJd7bCuIAANk87LxfeU8OiYPXvquxJl+QT3X+NE1ClapGcTjh78BO9mXORxSGMR
-# ygQ7RmTf/jHCJsh8S87Y5WoIO3DhaaxqyCF3t3EDAf+Ds80Za9WraUl32UklAMLy
-# somm/YO7KqDP1OcyvdvRTQSo9HMGHSb3fVz9wlaAaoCoi8tMiN4mkj8WT661wQ4c
-# aX258Hnj82HCaM8JSphMSpP2aJ0iGXdWaKbzMzgofBVCiWkvj6JObeteBr7/nohg
-# iJuuy12j8fjcopNdjkMZ7t7xHHXw/+/1+6MosmmSY/yHuo1vKHYw6v4mK8i/Xzwf
+# AQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRbXkuS0SM1
+# RI9M/A5kt5bnuE6wRzANBgkqhkiG9w0BAQEFAASCAQAkZpLoUdM9RS9Kk1/MGRhc
+# EzvTFNXsdIAYhxZSNMd/A1+BFnm/yRTfHmIiCXFJtgf5qgu2JpfZe+A5d/25Jcqm
+# Q5vN4sJwdJAJ3pXUZbztuiIt33REUmGXZRIduuxmKRBMLxLJqZaJrAtNVZke6lfa
+# msg63WpoyiYckBKuvpMIVVa7LxuncqHSNRrHKRxKz1x16Yc72Dkv5O7TAKgwh+VI
+# oUv6amN+FWVvDSkQ1HRdo7w+jbTz8U+EdrTWkjtvmioccUAxZFYGnH/K8DXE6Rta
+# neA42ag7e6y3VrAg6OWRkD9L1ZWJXyMtUqkw1T36PgfxFRrSUMY3vuTFzRBfxae1
 # SIG # End signature block
