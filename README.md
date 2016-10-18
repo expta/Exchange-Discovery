@@ -1,4 +1,4 @@
-# Exchange-Discovery
+# Discover-ExchangeEnvironment.ps1
 A collection of PowerShell scripts that gather discovery information about Exchange and Active Directory from a customer environment.
 
 ## SYNOPSIS
@@ -23,9 +23,9 @@ Discover-ExchangeEnvironment.ps1 will run the other scripts and then gather all 
 ## Credits
 Written By: Jeff Guillet, SPS Principal Systems Architect | MVP | MCSM | CISSP
 
-- Email:  jeff@expta.com
-- Website: http://expta.com
-- Twitter: http://twitter.com/expta
+- Email:    jeff@expta.com
+- Website:  http://expta.com
+- Twitter:  http://twitter.com/expta
 
 ## Change Log
 - V1.00, 10/17/2016 - Initial version
