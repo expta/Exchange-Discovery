@@ -22,6 +22,7 @@ Discover-ExchangeEnvironment.ps1 will run the other scripts and then gather all 
 
 ## Credits
 Written by: Jeff Guillet
+
             SPS Principal Systems Architect | MVP | MCSM | CISSP
 
 * Email:    jeff@expta.com
