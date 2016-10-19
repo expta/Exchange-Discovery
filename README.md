@@ -30,9 +30,11 @@ Written by: Jeff Guillet, SPS Principal Systems Architect | MVP | MCSM | CISSP
 * **Karsten Palmvig** - GetLogFileUsage.ps1
 * **Michael Van Horenbeeck** - Get-VirDirInfo.ps1
 * **Neil Johnson** - Messagestats.ps1
-* **Paul Cunningham** - Get-ADInfo.ps1, Get-MailboxReport.ps1, Test-ExchangeServerHealth.ps1
+* **Paul Cunningham** - Get-ADInfo.ps1, Get-MailboxReport.ps1, Test-ExchangeServerHealth.ps1, Get-EASDevicesReport.ps1, Get-DailyBackupAlerts.ps1, Get-ExchangeServerCertificateReport.ps1
 * **Rob Campbell** - Get-EmailStatsPerUser.ps1
 * **Steve Goodman** - Get-ExchangeEnvironmentReport.ps1
+* **Serkan Varoglu** - Report-MailboxPermissions.ps1
 
 ## Change Log
 - V1.00, 10/17/2016 - Initial version
+- V1.01, 10/19/2016 - Added Get-EASDevicesReport.ps1, Get-DailyBackupAlerts.ps1, Get-ExchangeServerCertificateReport.ps1, Report-MailboxPermissions.ps1; Force exit of discovery if not running from highest version Exchange server
