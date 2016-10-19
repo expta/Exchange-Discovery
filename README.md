@@ -32,8 +32,8 @@ Written by: Jeff Guillet, SPS Principal Systems Architect | MVP | MCSM | CISSP
 * **Neil Johnson** - Messagestats.ps1
 * **Paul Cunningham** - Get-ADInfo.ps1, Get-MailboxReport.ps1, Test-ExchangeServerHealth.ps1, Get-EASDevicesReport.ps1, Get-DailyBackupAlerts.ps1, Get-ExchangeServerCertificateReport.ps1
 * **Rob Campbell** - Get-EmailStatsPerUser.ps1
-* **Steve Goodman** - Get-ExchangeEnvironmentReport.ps1
 * **Serkan Varoglu** - Report-MailboxPermissions.ps1
+* **Steve Goodman** - Get-ExchangeEnvironmentReport.ps1
 
 ## Change Log
 - V1.00, 10/17/2016 - Initial version
