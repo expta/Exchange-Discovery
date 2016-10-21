@@ -36,7 +36,7 @@ $OutputFormat.tabs=0
 $OutputFormat.oTsFormat="yyyy-MM-dd hh:mm:ss"
 $OutputFormat.oCodepage=0
 $OutputFormat.fileMode=1
-Write-Progress -Activity "Executing query against $Server, please wait..."  -Status " "
+Write-Progress -Activity "Executing query against $Server, please wait..."  -Completed
 
 $SQLQuery = "/* Execute against Exchange RCA log files */ SELECT EXTRACT_SUFFIX(client-name,0,'=') as User,client-name as DN,client-software,client-software-version as Version,client-mode,client-ip,protocol  INTO '" + $Destination + "' FROM  '\\$Server\$ExchangePath\Logging\RPC Client Access\*.LOG' WHERE (operation='Connect') GROUP BY User,DN,client-software,Version,client-mode,client-ip,protocol ORDER BY User"
 $rtnVal = $LogQuery.ExecuteBatch($SQLQuery, $InputFormat, $OutputFormat)
@@ -47,8 +47,8 @@ $LogQuery = $null
 # SIG # Begin signature block
 # MIINHAYJKoZIhvcNAQcCoIINDTCCDQkCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUJm9gwNOG8loxbQbre+ss9H8W
-# KeGgggpeMIIFJjCCBA6gAwIBAgIQDabkR8675p80ZdtFokcNRTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUkTjLGqVJANK2yAnckgB3Lq6g
+# QTmgggpeMIIFJjCCBA6gAwIBAgIQDabkR8675p80ZdtFokcNRTANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE2MTAxNzAwMDAwMFoXDTE3MTAy
@@ -108,11 +108,11 @@ $LogQuery = $null
 # Y29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFzc3VyZWQgSUQgQ29kZSBTaWdu
 # aW5nIENBAhANpuRHzrvmnzRl20WiRw1FMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3
 # AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisG
-# AQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRLSj1p8h+W
-# HfuG8pwXOyX980yNKTANBgkqhkiG9w0BAQEFAASCAQC753RCNyhkIAFmlW1rfzyO
-# p3cP12bo1P8I6YIKVIGOYGA/v1y1W9bMwyfHJO3iFH7JjBYA9DlJt6tVVc7z7DY0
-# rvz1i1btyZxVUDCRp2pOjmLYEKvjYYS+naETxKLCi7ZOjz0FZPW6rERYc4KeJZ9g
-# +2WO5ydfBAq/U0W1ZXx824uEXFYYX3MenseFZOts2TQzs0gsrpmLLTUKilMAitWG
-# 99n0uR8fLPcvdtO08cRTid1sVz5qZH/8Xpu6sDe7FVBMc5fKhU8oZ1WD+HUsJwJj
-# IoQgpmI017vCho0DP5QkPMgYdGlXMaJn7fWa51a2Xk/rBQEIOFpeClE2dGbHmrlb
+# AQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQlhLpRb7OO
+# rplPB2pxUMCdErY5uTANBgkqhkiG9w0BAQEFAASCAQAG1m52EJBdBs66zeKJJtdI
+# LEdQf2Cb1rZjtOobJZZ9QeHgRQFjei/r3ufbjXbTC9qepBxI6ev8gptnE+Bdu1t0
+# rMSBGp9XcYUI6k/zjD4Uo01H9Mm0bYglq4s/pRxK/L0tWZ9Ss8T4R8Io/bTOR3fd
+# LDHiFDqfPkrPWxcwIA+pjidJ/wRdSBC1/buN7N+ByjlZJnTSoG2RuT0YsHCXsAlq
+# y6YciPwopO4+karrkgw/yTywsFZ2qpt5IkQ3cAAp1sd13LjdQ+ERoWxAlPNOQtfP
+# OkTFPIMgVKvN903zoMJ6Gjjm2X1GbeefImccLpNwWJ5TUS18K06fP8KZ3pXH0YCI
 # SIG # End signature block

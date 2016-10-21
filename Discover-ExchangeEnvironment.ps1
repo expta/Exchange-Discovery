@@ -1,23 +1,31 @@
-#Discover-ExchangeEnvironment.ps1
-#Jeff Guillet, MCSM | MVP
-#Gathers Exchange environment information
-#10/03/2016
+# Discover-ExchangeEnvironment.ps1
+# Jeff Guillet, MCSM | MVP
+# Gathers Exchange environment information
+# https://github.com/expta/Exchange-Discovery/
 
 if (!(Get-PSSession).ConfigurationName -eq "Microsoft.Exchange") {
-	Write-Host "Discovery must be run from the Exchange Management Shell on the highest version Exchange Server in the organization." -ForegroundColor Red
+	Write-Host "ERROR: Discovery must be run from the Exchange Management Shell on the highest version Exchange Server in the organization." -ForegroundColor Red
 	Exit
 }
 
+# Get the server name and find out if it's the newest version server in the org
+$ServerFqdn = $env:computername + "." + $env:userdnsdomain
+$ServerVersion = [string](Get-ExchangeServer $ServerFqdn | select AdminDisplayVersion)
+$ExServers = Get-ExchangeServer * | where {$_.ServerRole -notlike "Edge"}
+foreach ($ExServer in $ExServers) {
+	if ([string]($ExServer | select AdminDisplayVersion) -gt $ServerVersion) {
+		Write-Host "ERROR: This script should be run from the highest version server in the organization." -ForegroundColor Red
+		Get-ExchangeServer * | where {$_.ServerRole -notlike "Edge"} | ft Name, AdminDisplayVersion
+		Exit
+	}
+}
+
 $Now = Get-Date
-Write-Host "Started discovery: $Now from server $env:computername.$env:userdnsdomain" -ForegroundColor Green
+$StopWatch = [Diagnostics.Stopwatch]::StartNew()
+Write-Host "Started discovery: $Now from server $ServerFqdn" -ForegroundColor Green
 Write-Host
 
 $Org = (Get-OrganizationConfig).Name
-
-Write-Host "Gathering yesterday's message stats..." -ForegroundColor Cyan
-# Note: Change 1 to the number of days to offset. For example, if today is Monday use "3" to use the logs stats from three days ago (Friday) instead of Sunday.
-# See http://bit.ly/1WFf3yC for how to use this output.
-.\MessageStats.ps1 1
 
 Write-Host "Running virtual directory report..." -ForegroundColor Cyan
 . .\Get-VirDirInfo.ps1
@@ -27,23 +35,41 @@ Get-VirDirInfo -ADPropertiesOnly -Filepath .
 Write-Host "Creating Exchange environment report..." -ForegroundColor Cyan
 .\Get-ExchangeEnvironmentReport.ps1 -HtmlReport $Org-Environment.htm
 
+Write-Host "Creating Exchange Server certificate report..." -ForegroundColor Cyan
+.\Get-ExchangeServerCertificateReport.ps1
+
+Write-Host "Gathering yesterday's message stats..." -ForegroundColor Cyan
+# Note: Change 1 to the number of days to offset. For example, if today is Monday use "3" to use the logs stats from three days ago (Friday) instead of Sunday.
+# See http://bit.ly/1WFf3yC for how to use this output.
+if ((Get-Date).DayOfWeek -eq "Monday") {$Offset = 3} else {$Offset = 1}
+.\MessageStats.ps1 $Offset
+
 Write-Host "Creating Exchange backup report..." -ForegroundColor Cyan
 .\Get-DailyBackupAlerts.ps1
 
 Write-Host "Getting Active Directory info..." -ForegroundColor Cyan
 .\Get-ADInfo.ps1
 
+Write-Host "Getting accepted domains..." -ForegroundColor Cyan
+Get-AcceptedDomain | select Name,DomainName,DomainType,Default | Export-Csv "$Org-Accepted Domains.csv" -NoType
+
 Write-Host "Getting quota info..." -ForegroundColor Cyan
 .\Get-Quotas.ps1
 
 Write-Host "Getting Mailbox info..." -ForegroundColor Cyan
-Get-Mailbox -Resultsize Unlimited | ft UserPrincipalName,Name,WindowsEmailAddress,emailaddresses -Wrap | Out-File -FilePath $Org-EmailAddresses.txt
+Get-Mailbox -Resultsize Unlimited | Select Name, RecipientTypeDetails -ExpandProperty EmailAddresses | Select Name, ProxyAddressString, RecipientTypeDetails | Export-csv $Org-AllMailboxes.csv -NoType
 
-Write-Host "Getting Group info..." -ForegroundColor Cyan
-Get-DistributionGroup -Resultsize Unlimited | ft Name,DisplayName,WindowsEmailAddress,emailaddresses -Wrap | Out-File -FilePath $Org-GroupEmailAddresses.txt
+Write-Host "Getting Group email address info..." -ForegroundColor Cyan
+Get-DistributionGroup -Resultsize Unlimited | Select Name, GroupType -ExpandProperty EmailAddresses | Select Name, ProxyAddressString, GroupType | Export-csv $Org-AllDistributionGroups.csv -NoType
 
 Write-Host "Getting Contact info..." -ForegroundColor Cyan
-Get-Contact -Resultsize Unlimited | ft name,windowsemailaddress -Wrap | Out-File -FilePath $Org-ContactEmailAddresses.txt
+Get-Contact -Resultsize Unlimited | Select Name, WindowsEmailAddress | Export-csv $Org-AllContacts.csv -NoType
+
+Write-Host "Creating mailbox permissions report..." -ForegroundColor Cyan
+.\Report-Permissions.ps1 -HTMLReport "$Org-Mailbox Permissions.htm"
+
+Write-Host "Creating Exchange ActiveSync devices report..." -ForegroundColor Cyan
+.\Get-EASDeviceReport.ps1
 
 Write-Host "Calculating average mailbox size...." -ForegroundColor Cyan
 Get-Mailbox -Resultsize Unlimited | Get-MailboxStatistics | %{$_.TotalItemSize.Value.ToMB()} | Measure-Object -Average | Out-File -FilePath $Org-AvgMailboxSizeInMB.txt
@@ -55,18 +81,23 @@ Write-Host "Running Exchange Server health report..." -ForegroundColor Cyan
 .\Test-ExchangeServerHealth.ps1 -ReportMode -ReportFile $org-ExchangeServerHealth.htm
 
 Write-Host "Running Exchange client reports..." -ForegroundColor Cyan
-Get-ClientAccessServer -WA SilentlyContinue | % {.\Get-OutlookClients.ps1 $_.Name}
+Get-ClientAccessServer -WarningAction SilentlyContinue | foreach {.\Get-OutlookClients.ps1 $_.Name}
 Get-Content *Clients.csv | Out-File "All Exchange Clients.csv"
 
 #Write-Host "Gathering mailbox report. This can take quite a while to run..." -ForegroundColor Cyan
 #.\Get-MailboxReport.ps1 -all
 
+#Wrap it up
 $Now = Get-Date
 Write-Host "Ended discovery: $Now from server $env:computername.$env:userdnsdomain" -ForegroundColor Green
+$Stopsatch.Stop()
+$ElapsedTime = $Stopwatch.Elapsed
+Write-Host "Execution time: " -ForegroundColor Green -NoNewLine
+Write-Host $([string]::Format("{0:d2}:{1:d2}:{2:d2}", $ElapsedTime.hours, $ElapsedTime.minutes, $ElapsedTime.seconds))
 Write-Host
-
 Write-Host "Compressing discovery files to $Org-DiscoveryFiles.zip..." -Foregroundcolor Cyan
 
+#Save all screen output to HTML file
 .\Get-BufferHtml.ps1 > ScreenOutput.htm
 
 function Add-Zip
@@ -86,7 +117,7 @@ function Add-Zip
 
 	foreach($file in $input) 
 	{ 
-		$zipPackage.MoveHere($file.FullName)
+		$zipPackage.MoveHere($file.FullName,16)
 		Start-Sleep -Seconds 1
 	}
 }
@@ -101,8 +132,8 @@ Write-Host "Done! Please send the ""$Org-DiscoveryFiles.zip"" file to your SPS e
 # SIG # Begin signature block
 # MIINHAYJKoZIhvcNAQcCoIINDTCCDQkCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUUgOj4zRLqB4r/joN26MZyAYE
-# 88qgggpeMIIFJjCCBA6gAwIBAgIQDabkR8675p80ZdtFokcNRTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUG2OHuBIJ8FuNqGfW0w3ZacHA
+# l2ygggpeMIIFJjCCBA6gAwIBAgIQDabkR8675p80ZdtFokcNRTANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE2MTAxNzAwMDAwMFoXDTE3MTAy
@@ -162,11 +193,11 @@ Write-Host "Done! Please send the ""$Org-DiscoveryFiles.zip"" file to your SPS e
 # Y29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFzc3VyZWQgSUQgQ29kZSBTaWdu
 # aW5nIENBAhANpuRHzrvmnzRl20WiRw1FMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3
 # AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisG
-# AQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRbXkuS0SM1
-# RI9M/A5kt5bnuE6wRzANBgkqhkiG9w0BAQEFAASCAQAkZpLoUdM9RS9Kk1/MGRhc
-# EzvTFNXsdIAYhxZSNMd/A1+BFnm/yRTfHmIiCXFJtgf5qgu2JpfZe+A5d/25Jcqm
-# Q5vN4sJwdJAJ3pXUZbztuiIt33REUmGXZRIduuxmKRBMLxLJqZaJrAtNVZke6lfa
-# msg63WpoyiYckBKuvpMIVVa7LxuncqHSNRrHKRxKz1x16Yc72Dkv5O7TAKgwh+VI
-# oUv6amN+FWVvDSkQ1HRdo7w+jbTz8U+EdrTWkjtvmioccUAxZFYGnH/K8DXE6Rta
-# neA42ag7e6y3VrAg6OWRkD9L1ZWJXyMtUqkw1T36PgfxFRrSUMY3vuTFzRBfxae1
+# AQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQh4cxCbw+B
+# K1Q92/gc23uAhLPS2TANBgkqhkiG9w0BAQEFAASCAQAWODFb6FtLWxKYc45iEhHp
+# Vb/mtqHf8XP3iKYBVszjl6PGLs7lo8toC45znqtEzrOvD+pTTlCi/FHZ7IplK/Bz
+# Uy3YRH15zBFHoeXo5GRFIdAHOxOjcyaYg7hzGt4dKpF9IDRhqm2MXW3ZyLRXZJCR
+# WxJebfa3WFTXFovLJIdZh0gY9TWyaou4WehzcjdnuJ1QvHlPNHvJtWGkaZqASvOO
+# T5z2/QURUrk3dAztfqZucYHN5vRJ4uagiQR9t//g4q9TWsWZlV2F6/PgMrCOtUnY
+# coo6VkZvmx94gEnUMMK8f33/leK/rjSf+E/Ya/uwtLh2vAGU0Y8w1krsUo0vBs/p
 # SIG # End signature block
