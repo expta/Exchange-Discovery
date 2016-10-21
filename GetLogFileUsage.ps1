@@ -17,7 +17,7 @@ param (
 	$Server = $null,																						# Specific server name or "all"
 	$Database = $null,																						# Specific database log set (overruled if server is specified)
 	$PathFile = ".\paths.txt",																				# Use this file as input if no server or DB is specified, for legacy and non-Exchange support
-	$Delimiter = ";"																						# Set whatever separator your Excel defaults to, to be able to open .csv output file directly, also used for pathfile import
+	$Delimiter = ","																						# Set whatever separator your Excel defaults to, to be able to open .csv output file directly, also used for pathfile import
 )
 
 if ($help -or ($psboundparameters.count -eq 0)) { 
@@ -48,7 +48,8 @@ else { Write-Output "No usable command line arguments..."; Exit }
 if ($date -eq $null) { $start = Get-Date([DateTime]::Now).AddDays(-1); $end = Get-Date }					# Last 24 hours (default)
 else { $start = Get-Date($date); $end = $(Get-Date($date)).AddDays(1) }										# Custom date
 
-$outputfile = $pwd.Path + "\output-$((Get-Date -uformat %Y%m%d%H%M).ToString()).csv"						# Log all findings in this file in current folder
+$outputfile = $pwd.Path + "\LogFileUsage.csv"											# Log all findings in this file in current folder
+#$outputfile = $pwd.Path + "\output-$((Get-Date -uformat %Y%m%d%H%M).ToString()).csv"						# Log all findings in this file in current folder
 
 $hash = @{
 	Time		= $Hour
@@ -110,8 +111,8 @@ Write-Output "Percent column has been added to your clipboard for easier pasting
 # SIG # Begin signature block
 # MIINHAYJKoZIhvcNAQcCoIINDTCCDQkCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUd9LLxZuj79vru4wF0fofmanR
-# w96gggpeMIIFJjCCBA6gAwIBAgIQDabkR8675p80ZdtFokcNRTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUaHf0MQOqq6M+VS7XS9udDpQn
+# 7wWgggpeMIIFJjCCBA6gAwIBAgIQDabkR8675p80ZdtFokcNRTANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE2MTAxNzAwMDAwMFoXDTE3MTAy
@@ -171,11 +172,11 @@ Write-Output "Percent column has been added to your clipboard for easier pasting
 # Y29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFzc3VyZWQgSUQgQ29kZSBTaWdu
 # aW5nIENBAhANpuRHzrvmnzRl20WiRw1FMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3
 # AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisG
-# AQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQ9u5fEu9RQ
-# IDUZlEptTch8AowmbzANBgkqhkiG9w0BAQEFAASCAQCS9PeA1vja6pDJssQu35gq
-# Wtzeq8ThY9nKVj149G+9EUykFY3xmS7gmekg8DQar1hzO1IUORDp0Sa2um5hFOeQ
-# W5bFmACxaZmdZwGZ5tgNFiztI8OvzzqzxmnuAD7fAax39gtmmSt0a7KLh4Q/cmPx
-# U1y9XIUh464aBW5RSSHxzDzgYqtMWM5MKdgmwwHSHFTa6H6c6MfSRTZeuHH8fmfF
-# 5j2kAKNiyW6x4fnGNYCXdN3ZvYtHYT93ZiSJZ6g0fO9xbhZAYHq17QwNPACVI0WX
-# FLJhJF2tGxQN7iUeZqGYrTsso4JVMk3O2XrmKjgfbJrWLfF/KYj590NCK0S7r0fD
+# AQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRoGU4cxh6L
+# 1d5QA2jlEE7sKGhjfDANBgkqhkiG9w0BAQEFAASCAQDH0cri/aDGV2rAyflh01sp
+# SKUe0Zjbv8oG6+Ly+m8bQmUcv/HtCq2bCEqfYeRLS0O5V5JKUAKJbA2G4qinrU9l
+# PaPXXVNLHji2BEV0+niZIZeuZ1ABkWoBfLhQrA+zj5WwLDQjto7hK/mFwyjAmd11
+# DBiMuTABvYyMAEjMo5BdekEM+IQ1esCAghpM9tiC+tYLJ9j8oIAky4yBAzb2zetp
+# B0Yejrj5XSK0YbFzamqJ1y5rdtPQaJz2XEbftHb2dATIN68c3IqKLvgWS1aYM4G7
+# tndLuNifZJhjKQsx5Hfe7T3zK/lRaJpMgBkUgVBbvw80hGDC4tBbuj1Ix7zfFPjs
 # SIG # End signature block
